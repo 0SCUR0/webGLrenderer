@@ -1,0 +1,57 @@
+<script type="text/javascript">
+	//can probably get this out of here through backend optimization
+	function include(scriptName){
+		/^.*\.(js|css|vs|fs|obj)$/.test(scriptName) ? /(js|fs|vs|obj)$/.test(scriptName) ? 
+		format = 'script': format = 'link': format = 'neither';
+
+		var tag = document.createElement(format);
+
+		switch(format){
+			case 'script':			
+				tag.type ='text/javascript';
+				if(/(fs|vs|obj)$/.test(scriptName)){
+					tag.src = scriptName + ".js";
+				}else{
+					tag.src = scriptName;
+				}					
+			break;
+			case 'link':
+				tag.type ='text/css';
+				tag.href= scriptName ;
+				tag.rel= 'stylesheet';
+			break;
+			case 'neither':
+				tag = 'error'
+			break;
+		}
+
+		try{
+			document.getElementsByTagName('head')[0].appendChild(tag);
+		}
+		catch( error ){
+			var stack = error.stack.split("at");
+			console.warn('/////⚠ WARNING ⚠///// '+ scriptName +' uses an unsupported format (supported formats: .js or .css) \n	Error at'+ stack[stack.length-1]);
+		}
+	};</script>
+<script>
+//THE ORDER MATTERS!!!
+// least to most dependencies
+			include('font/RuneScape.css');
+		include('style.css');
+					include('mesh/chest_closed.obj');
+					include('mesh/chest_open.obj');
+					include('mesh/wireframe_assets.obj');
+					include('mesh/icosahedron.obj');
+					include('mesh/missile_mesh.obj');
+					// include('mesh/monkey.obj');
+
+					//meshes
+					include('main_vertex_shader.vs');
+					include('main_fragment_shader.fs');
+					//main shader program
+				include('mainWebGL.js');
+			include('webGL/gl-matrix.js');
+		include('WebGL.js');
+		include('Math.js');
+	include('main.js');
+</script>
